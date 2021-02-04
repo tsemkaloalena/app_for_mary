@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>860</width>
-    <height>451</height>
+    <height>510</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,6 +17,23 @@
    <string notr="true">background-color: rgb(225, 175, 255);</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
+   <item row="2" column="1">
+    <widget class="QPushButton" name="summ">
+     <property name="font">
+      <font>
+       <family>Segoe Print</family>
+       <pointsize>15</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(129, 86, 129);
+color: rgb(255, 255, 255);</string>
+     </property>
+     <property name="text">
+      <string>Сложение</string>
+     </property>
+    </widget>
+   </item>
    <item row="2" column="0">
     <widget class="QPushButton" name="mult">
      <property name="font">
@@ -34,8 +51,8 @@ color: rgb(255, 255, 255);</string>
      </property>
     </widget>
    </item>
-   <item row="2" column="1">
-    <widget class="QPushButton" name="summ">
+   <item row="3" column="1">
+    <widget class="QPushButton" name="dedact">
      <property name="font">
       <font>
        <family>Segoe Print</family>
@@ -47,7 +64,7 @@ color: rgb(255, 255, 255);</string>
 color: rgb(255, 255, 255);</string>
      </property>
      <property name="text">
-      <string>Сложение</string>
+      <string>Вычитание</string>
      </property>
     </widget>
    </item>
@@ -85,6 +102,23 @@ color: rgb(255, 255, 255);</string>
      </property>
     </widget>
    </item>
+   <item row="3" column="0">
+    <widget class="QPushButton" name="divide">
+     <property name="font">
+      <font>
+       <family>Segoe Print</family>
+       <pointsize>15</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(129, 86, 129);
+color: rgb(255, 255, 255);</string>
+     </property>
+     <property name="text">
+      <string>Деление</string>
+     </property>
+    </widget>
+   </item>
    <item row="0" column="0" colspan="2">
     <widget class="QLabel" name="label">
      <property name="maximumSize">
@@ -103,7 +137,7 @@ color: rgb(255, 255, 255);</string>
       <enum>Qt::LeftToRight</enum>
      </property>
      <property name="text">
-      <string>Да начнётся великое сражение Машки и математики!</string>
+      <string>Да начнётся великое сражение Машки с математикой!</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
@@ -113,8 +147,8 @@ color: rgb(255, 255, 255);</string>
      </property>
     </widget>
    </item>
-   <item row="3" column="0">
-    <widget class="QPushButton" name="divide">
+   <item row="4" column="0" colspan="2">
+    <widget class="QPushButton" name="resultButton">
      <property name="font">
       <font>
        <family>Segoe Print</family>
@@ -122,28 +156,11 @@ color: rgb(255, 255, 255);</string>
       </font>
      </property>
      <property name="styleSheet">
-      <string notr="true">background-color: rgb(129, 86, 129);
+      <string notr="true">background-color: rgb(100, 57, 100);
 color: rgb(255, 255, 255);</string>
      </property>
      <property name="text">
-      <string>Деление</string>
-     </property>
-    </widget>
-   </item>
-   <item row="3" column="1">
-    <widget class="QPushButton" name="dedact">
-     <property name="font">
-      <font>
-       <family>Segoe Print</family>
-       <pointsize>15</pointsize>
-      </font>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color: rgb(129, 86, 129);
-color: rgb(255, 255, 255);</string>
-     </property>
-     <property name="text">
-      <string>Вычитание</string>
+      <string>Посмотреть результаты</string>
      </property>
     </widget>
    </item>

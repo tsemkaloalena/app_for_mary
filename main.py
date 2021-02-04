@@ -4,7 +4,7 @@ from random import randint
 from PyQt5.QtCore import Qt
 from PyQt5 import uic
 from PyQt5.QtGui import QPixmap
-from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QLabel
+from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QLabel, QTableWidgetItem
 from PyQt5.QtWidgets import QLCDNumber, QLineEdit
 
 
@@ -16,32 +16,38 @@ class FirstWidget(QWidget):
         self.mult.clicked.connect(self.start_mult)
         self.dedact.clicked.connect(self.start_dedact)
         self.divide.clicked.connect(self.start_divide)
+        self.resultButton.clicked.connect(self.show_results)
         self.pixmap = QPixmap('data/img1.jpg').scaled(self.img.size(), Qt.KeepAspectRatio)
         self.img.setPixmap(self.pixmap)
         self.show()
 
     def start_summ(self):
-        self.action_window = ActiontWidgetSumm(self)
+        self.action_window = ActionWidgetSumm(self)
         self.action_window.show()
         self.close()
 
     def start_mult(self):
-        self.action_window = ActiontWidgetMult(self)
+        self.action_window = ActionWidgetMult(self)
         self.action_window.show()
         self.close()
 
     def start_dedact(self):
-        self.action_window = ActiontWidgetDedact(self)
+        self.action_window = ActionWidgetDedact(self)
         self.action_window.show()
         self.close()
 
     def start_divide(self):
-        self.action_window = ActiontWidgetDivide(self)
+        self.action_window = ActionWidgetDivide(self)
+        self.action_window.show()
+        self.close()
+
+    def show_results(self):
+        self.action_window = ActionWidgetResults(self)
         self.action_window.show()
         self.close()
 
 
-class ActiontWidgetSumm(QWidget):
+class ActionWidgetSumm(QWidget):
     def __init__(self, *names):
         super().__init__()
         uic.loadUi('data/page1.ui', self)
@@ -57,25 +63,26 @@ class ActiontWidgetSumm(QWidget):
         self.label.setText(str(self.nums[0]) + ' + ' + str(self.nums[1]) + ' = ')
 
     def check(self):
-        if int(self.answer.text()) != int(self.nums[0] + self.nums[1]):
-            self.status.setText('Неправильно! Попробуй ещё разок!')
-            con = sqlite3.connect('data/results.db')
-            cur = con.cursor()
-            example = str(self.nums[0]) + ' + ' + str(self.nums[1])
-            cur.execute(f"INSERT INTO mistakes(example, answer, correct) VALUES('{example}', '{self.answer.text()}', '{str(self.nums[0] * self.nums[1])}')").fetchall()
-            cur.execute(f"UPDATE `total` SET `wrong` = `wrong` + 1").fetchall()
-            con.commit()
-        else:
-            con = sqlite3.connect('data/results.db')
-            cur = con.cursor()
-            cur.execute(f"UPDATE `total` SET `correct` = `correct` + 1").fetchall()
-            con.commit()
-            self.action_window = NextWidget(self)
-            self.action_window.show()
-            self.close()
+        if self.answer.text().isdigit():
+            if int(self.answer.text()) != int(self.nums[0] + self.nums[1]):
+                self.status.setText('Неправильно! Попробуй ещё разок!')
+                con = sqlite3.connect('data/results.db')
+                cur = con.cursor()
+                example = str(self.nums[0]) + ' + ' + str(self.nums[1])
+                cur.execute(f"INSERT INTO mistakes(example, answer, correct) VALUES('{example}', '{self.answer.text()}', '{str(self.nums[0] + self.nums[1])}')").fetchall()
+                cur.execute(f"UPDATE `total` SET `wrong` = `wrong` + 1").fetchall()
+                con.commit()
+            else:
+                con = sqlite3.connect('data/results.db')
+                cur = con.cursor()
+                cur.execute(f"UPDATE `total` SET `correct` = `correct` + 1").fetchall()
+                con.commit()
+                self.action_window = NextWidget(self)
+                self.action_window.show()
+                self.close()
 
 
-class ActiontWidgetMult(QWidget):
+class ActionWidgetMult(QWidget):
     def __init__(self, *names):
         super().__init__()
         uic.loadUi('data/page1.ui', self)
@@ -89,25 +96,26 @@ class ActiontWidgetMult(QWidget):
         self.label.setText(str(self.nums[0]) + ' * ' + str(self.nums[1]) + ' = ')
 
     def check(self):
-        if int(self.answer.text()) != int(self.nums[0] * self.nums[1]):
-            self.status.setText('Неправильно! Попробуй ещё разок!')
-            con = sqlite3.connect('data/results.db')
-            cur = con.cursor()
-            example = str(self.nums[0]) + ' * ' + str(self.nums[1])
-            cur.execute(f"INSERT INTO mistakes(example, answer, correct) VALUES('{example}', '{self.answer.text()}', '{str(self.nums[0] * self.nums[1])}')").fetchall()
-            cur.execute(f"UPDATE `total` SET `wrong` = `wrong` + 1").fetchall()
-            con.commit()
-        else:
-            con = sqlite3.connect('data/results.db')
-            cur = con.cursor()
-            cur.execute(f"UPDATE `total` SET `correct` = `correct` + 1").fetchall()
-            con.commit()
-            self.action_window = NextWidget(self)
-            self.action_window.show()
-            self.close()
+        if self.answer.text().isdigit():
+            if int(self.answer.text()) != int(self.nums[0] * self.nums[1]):
+                self.status.setText('Неправильно! Попробуй ещё разок!')
+                con = sqlite3.connect('data/results.db')
+                cur = con.cursor()
+                example = str(self.nums[0]) + ' * ' + str(self.nums[1])
+                cur.execute(f"INSERT INTO mistakes(example, answer, correct) VALUES('{example}', '{self.answer.text()}', '{str(self.nums[0] * self.nums[1])}')").fetchall()
+                cur.execute(f"UPDATE `total` SET `wrong` = `wrong` + 1").fetchall()
+                con.commit()
+            else:
+                con = sqlite3.connect('data/results.db')
+                cur = con.cursor()
+                cur.execute(f"UPDATE `total` SET `correct` = `correct` + 1").fetchall()
+                con.commit()
+                self.action_window = NextWidget(self)
+                self.action_window.show()
+                self.close()
 
 
-class ActiontWidgetDedact(QWidget):
+class ActionWidgetDedact(QWidget):
     def __init__(self, *names):
         super().__init__()
         uic.loadUi('data/page1.ui', self)
@@ -123,25 +131,26 @@ class ActiontWidgetDedact(QWidget):
         self.label.setText(str(self.nums[0]) + ' - ' + str(self.nums[1]) + ' = ')
 
     def check(self):
-        if int(self.answer.text()) != int(self.nums[0] - self.nums[1]):
-            self.status.setText('Неправильно! Попробуй ещё разок!')
-            con = sqlite3.connect('data/results.db')
-            cur = con.cursor()
-            example = str(self.nums[0]) + ' - ' + str(self.nums[1])
-            cur.execute(f"INSERT INTO mistakes(example, answer, correct) VALUES('{example}', '{self.answer.text()}', '{str(self.nums[0] * self.nums[1])}')").fetchall()
-            cur.execute(f"UPDATE `total` SET `wrong` = `wrong` + 1").fetchall()
-            con.commit()
-        else:
-            con = sqlite3.connect('data/results.db')
-            cur = con.cursor()
-            cur.execute(f"UPDATE `total` SET `correct` = `correct` + 1").fetchall()
-            con.commit()
-            self.action_window = NextWidget(self)
-            self.action_window.show()
-            self.close()
+        if self.answer.text().isdigit():
+            if int(self.answer.text()) != int(self.nums[0] - self.nums[1]):
+                self.status.setText('Неправильно! Попробуй ещё разок!')
+                con = sqlite3.connect('data/results.db')
+                cur = con.cursor()
+                example = str(self.nums[0]) + ' - ' + str(self.nums[1])
+                cur.execute(f"INSERT INTO mistakes(example, answer, correct) VALUES('{example}', '{self.answer.text()}', '{str(self.nums[0] - self.nums[1])}')").fetchall()
+                cur.execute(f"UPDATE `total` SET `wrong` = `wrong` + 1").fetchall()
+                con.commit()
+            else:
+                con = sqlite3.connect('data/results.db')
+                cur = con.cursor()
+                cur.execute(f"UPDATE `total` SET `correct` = `correct` + 1").fetchall()
+                con.commit()
+                self.action_window = NextWidget(self)
+                self.action_window.show()
+                self.close()
 
 
-class ActiontWidgetDivide(QWidget):
+class ActionWidgetDivide(QWidget):
     def __init__(self, *names):
         super().__init__()
         uic.loadUi('data/page1.ui', self)
@@ -157,22 +166,51 @@ class ActiontWidgetDivide(QWidget):
         self.label.setText(str(self.nums[0]) + ' / ' + str(self.nums[1]) + ' = ')
 
     def check(self):
-        if int(self.answer.text()) != int(self.nums[0] / self.nums[1]):
-            self.status.setText('Неправильно! Попробуй ещё разок!')
-            con = sqlite3.connect('data/results.db')
-            cur = con.cursor()
-            example = str(self.nums[0]) + ' / ' + str(self.nums[1])
-            cur.execute(f"INSERT INTO mistakes(example, answer, correct) VALUES('{example}', '{self.answer.text()}', '{str(self.nums[0] * self.nums[1])}')").fetchall()
-            cur.execute(f"UPDATE `total` SET `wrong` = `wrong` + 1").fetchall()
-            con.commit()
-        else:
-            con = sqlite3.connect('data/results.db')
-            cur = con.cursor()
-            cur.execute(f"UPDATE `total` SET `correct` = `correct` + 1").fetchall()
-            con.commit()
-            self.action_window = NextWidget(self)
-            self.action_window.show()
-            self.close()
+        if self.answer.text().isdigit():
+            if int(self.answer.text()) != int(self.nums[0] / self.nums[1]):
+                self.status.setText('Неправильно! Попробуй ещё разок!')
+                con = sqlite3.connect('data/results.db')
+                cur = con.cursor()
+                example = str(self.nums[0]) + ' / ' + str(self.nums[1])
+                cur.execute(f"INSERT INTO mistakes(example, answer, correct) VALUES('{example}', '{self.answer.text()}', '{str(self.nums[0] / self.nums[1])}')").fetchall()
+                cur.execute(f"UPDATE `total` SET `wrong` = `wrong` + 1").fetchall()
+                con.commit()
+            else:
+                con = sqlite3.connect('data/results.db')
+                cur = con.cursor()
+                cur.execute(f"UPDATE `total` SET `correct` = `correct` + 1").fetchall()
+                con.commit()
+                self.action_window = NextWidget(self)
+                self.action_window.show()
+                self.close()
+
+
+class ActionWidgetResults(QWidget):
+    def __init__(self, *names):
+        super().__init__()
+        uic.loadUi('data/result.ui', self)
+        self.backButton.clicked.connect(self.back_to_main)
+        self.initUI()
+
+    def initUI(self):
+        con = sqlite3.connect('data/results.db')
+        cur = con.cursor()
+        result_total = cur.execute("""SELECT * FROM `total` """).fetchone()
+        self.correct.setText(str(result_total[0]))
+        self.wrong.setText(str(result_total[1]))
+
+        result_mistakes = cur.execute("""SELECT * FROM `mistakes` """).fetchall()
+        self.tableWidget.setRowCount(len(result_mistakes))
+        self.tableWidget.setColumnCount(3)
+        for i, elem in enumerate(result_mistakes):
+            for j, val in enumerate(elem):
+                self.tableWidget.setItem(i, j, QTableWidgetItem(str(val)))
+        con.commit()
+
+    def back_to_main(self):
+        self.action_window = FirstWidget(self)
+        self.action_window.show()
+        self.close()
 
 
 class NextWidget(QWidget):
